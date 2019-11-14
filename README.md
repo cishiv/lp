@@ -1,4 +1,4 @@
-# Permissions
+# lp
 
 `lp` a shell command that mirrors `ll` but displays the file permissions in the format
 that chmod accepts them

@@ -9,7 +9,9 @@ that chmod accepts them
 
 `rwrr-xr-x` -> `755`
 
-Simply copy `lp` into your bin folder and add it to your path
+# Usage
+
+Simply copy the `lp` into your bin folder and add it to your path
 
 # Output Example
 

@@ -1,26 +1,45 @@
-# lp
+## Permissions
 
-`lp` a shell command that mirrors `ll` but displays the file permissions in the format
-that chmod accepts them
+Script-friendly octal permissions. Saves a bit of time when you would normally
+need to parse a bunch of `stat` output to get what you need.
 
-# Examples
+## Usage:
 
-`drwxr-xr-x` -> `dir 777`
+Check out the `/examples` directory:
 
-`rwrr-xr-x` -> `755`
+### Extract permissions for chmod
 
-# Usage
+```
+# Get current permissions
+perm=$(./permissions file myfile --octal-only | awk '{print $1}')
+chmod "$perm" newfile
 
-Simply copy the `lp` into your bin folder and add it to your path
+# Or in a pipeline:
+find . -name "*.txt" -exec ./permissions file {} --octal-only \; | while read perm file; do
+    echo "File $file has permissions $perm"
+done
+```
 
-# Output Example
+### Filter by file type
 
-![](example.png)
+```
+# Only process directories
+./permissions dir /tmp --numeric-types | grep "^1 " | while read type perm name; do
+    echo "Directory $name has permissions $perm"
+done
+```
 
-# Shortcomings
+### vs Stat
 
-printf formatting to the console would be an improvement since column alignment is off (probably due to using echo for everything)
+```
+./permissions file /etc/passwd --octal-only
+# Output: 644 /etc/passwd
 
-# Disclaimer
+# stat equivalent
+stat -f "%Mp%Lp %N" /etc/passwd 2>/dev/null || stat --format="%a %n" /etc/passwd 2>/dev/null
+# Output: 644 /etc/passwd
+```
 
-This was done in 30 minutes after work on a Thursday. Forgive me.
+## Previous Version
+
+I first wrote this in 2019 as a shell script (check out `archive/lp`).

@@ -3,6 +3,8 @@
 Script-friendly octal permissions. Saves a bit of time when you would normally
 need to parse a bunch of `stat` output to get what you need.
 
+Supports Zig `0.15.1`
+
 ## Usage:
 
 ```

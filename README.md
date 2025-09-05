@@ -32,3 +32,7 @@ Examples:
 ## Previous Version
 
 I first wrote this in 2019 as a shell script (check out `archive/lp`).
+
+## Issues
+
+- parsing `ls -al` from `stdin` doesn't work as expected

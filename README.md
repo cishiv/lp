@@ -5,40 +5,27 @@ need to parse a bunch of `stat` output to get what you need.
 
 ## Usage:
 
-Check out the `/examples` directory:
-
-### Extract permissions for chmod
-
 ```
-# Get current permissions
-perm=$(./permissions file myfile --octal-only | awk '{print $1}')
-chmod "$perm" newfile
+% ./permissions 
+Usage: ./permissions <mode> [target] [options]
+Modes:
+  parse <perm_string>   # Parse permission string like 'drwxr-xr-x'
+  file <path>           # Get info from actual file
+  dir <path>            # List directory (like ls -al)
+  stdin                 # Parse ls -al output from stdin
 
-# Or in a pipeline:
-find . -name "*.txt" -exec ./permissions file {} --octal-only \; | while read perm file; do
-    echo "File $file has permissions $perm"
-done
-```
+Options:
+  --octal-only          # Output only octal permissions (644)
+  --type-only           # Output only file type (dir/file/link)
+  --numeric-types       # Use numeric types (0=file, 1=dir, 2=link, etc.)
 
-### Filter by file type
-
-```
-# Only process directories
-./permissions dir /tmp --numeric-types | grep "^1 " | while read type perm name; do
-    echo "Directory $name has permissions $perm"
-done
+Examples:
+  ./permissions parse drwxr-xr-x
+  ./permissions file /etc/passwd --octal-only
+  ./permissions dir /tmp --numeric-types
+  ls -al | ./permissions stdin --octal-only
 ```
 
-### vs Stat
-
-```
-./permissions file /etc/passwd --octal-only
-# Output: 644 /etc/passwd
-
-# stat equivalent
-stat -f "%Mp%Lp %N" /etc/passwd 2>/dev/null || stat --format="%a %n" /etc/passwd 2>/dev/null
-# Output: 644 /etc/passwd
-```
 
 ## Previous Version
 
